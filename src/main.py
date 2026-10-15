@@ -19,19 +19,16 @@ CAMPOS_OBRIGATORIOS = ("titulo", "descricao", "prioridade", "data_limite", "stat
 
 
 def validar_titulo(titulo: str) -> bool:
-    """Retorna True somente quando o título contém algo além de espaços."""
     return bool(titulo and titulo.strip())
 
 
 def normalizar_prioridade(valor: str) -> str | None:
-    """Padroniza a prioridade ou retorna None se ela não for permitida."""
     if not isinstance(valor, str):
         return None
     return PRIORIDADES_VALIDAS.get(valor.strip().casefold())
 
 
 def carregar_tarefas(caminho: Path = ARQUIVO_TAREFAS) -> list[dict[str, str]]:
-    """Carrega tarefas do JSON; retorna lista vazia quando o arquivo não existe."""
     if not caminho.exists():
         return []
 
@@ -73,7 +70,6 @@ def carregar_tarefas(caminho: Path = ARQUIVO_TAREFAS) -> list[dict[str, str]]:
 
 
 def salvar_tarefas(tarefas: list[dict[str, str]], caminho: Path = ARQUIVO_TAREFAS) -> None:
-    """Salva os dados em JSON e substitui o arquivo de forma atômica."""
     caminho.parent.mkdir(parents=True, exist_ok=True)
     arquivo_temporario = caminho.with_suffix(caminho.suffix + ".tmp")
 
@@ -88,7 +84,6 @@ def salvar_tarefas(tarefas: list[dict[str, str]], caminho: Path = ARQUIVO_TAREFA
 
 
 def pedir_titulo() -> str:
-    """Solicita o título até receber uma entrada válida."""
     while True:
         titulo = input("Título da tarefa: ").strip()
         if validar_titulo(titulo):
@@ -97,7 +92,6 @@ def pedir_titulo() -> str:
 
 
 def pedir_prioridade() -> str:
-    """Solicita uma prioridade permitida e retorna seu nome padronizado."""
     while True:
         valor = input("Prioridade (Alta/Média/Baixa): ")
         prioridade = normalizar_prioridade(valor)
@@ -107,12 +101,11 @@ def pedir_prioridade() -> str:
 
 
 def cadastrar_tarefa(tarefas: list[dict[str, str]]) -> None:
-    """Lê os campos, valida e salva uma nova tarefa."""
     print("\n--- Cadastro de tarefa ---")
     titulo = pedir_titulo()
-    descricao = input("Descrição (opcional): ").strip()
+    descricao = input("Descrição: ").strip()
     prioridade = pedir_prioridade()
-    data_limite = input("Data limite (opcional, por exemplo 25/12/2026): ").strip()
+    data_limite = input("Data limite (por exemplo 25/12/2026): ").strip()
 
     nova_tarefa = {
         "titulo": titulo,
@@ -135,7 +128,6 @@ def cadastrar_tarefa(tarefas: list[dict[str, str]]) -> None:
 
 
 def visualizar_tarefas(tarefas: list[dict[str, str]]) -> None:
-    """Exibe todas as tarefas em formato legível."""
     print("\n--- Tarefas cadastradas ---")
     if not tarefas:
         print("Nenhuma tarefa cadastrada no momento.")
@@ -153,7 +145,6 @@ def visualizar_tarefas(tarefas: list[dict[str, str]]) -> None:
 
 
 def executar_menu(tarefas: list[dict[str, str]]) -> None:
-    """Mantém o menu ativo até o usuário escolher sair."""
     while True:
         print("\n========== TASKTRACKER ==========")
         print("1. Cadastrar nova tarefa")
@@ -173,7 +164,6 @@ def executar_menu(tarefas: list[dict[str, str]]) -> None:
 
 
 def main() -> None:
-    """Ponto de entrada da aplicação."""
     try:
         tarefas = carregar_tarefas()
     except (OSError, ValueError) as erro:

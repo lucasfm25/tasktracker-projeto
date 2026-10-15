@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Editores e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Arquivo de dados criado durante o uso (não publicar tarefas pessoais)
+data/tarefas.json
+data/tarefas.json.tmp
